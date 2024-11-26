@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Participants</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .widget {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        h3 {
+            font-weight: 520;
+            color: #2C3E50 ;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600; /* Plus léger et moderne */
+            color: #2C3E50 ; /* Couleur orange personnalisée */
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            padding-left: 30px; /* Espace pour l'icône */
+            font-size: 2.5rem; /* Taille plus grande pour plus de présence */
+            animation: fadeIn 1s ease-out; /* Animation pour l'entrée élégante */
+        }
+
+        h1 span {
+            color: #333;
+        }
+
+        h1::before {
+            font-family: 'Font Awesome 5 Free'; /* FontAwesome pour l'icône */
+            font-weight: 900; /* Poids d'icône */
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem; /* Taille de l'icône */
+            color: #C17445; /* Même couleur que le texte */
+            transition: transform 0.3s ease-in-out; /* Transition douce pour l'icône */
+        }
+
+        h1:hover::before {
+            transform: translateY(-50%) rotate(360deg); /* Rotation de l'icône lors du survol */
+        }
+
+        /* Animation d'apparition du texte */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn {
+            text-transform: uppercase;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+
+        .table th {
+            background-color: #2C3E50 ;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .action-icons a {
+            margin-right: 10px;
+            color: #003457;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .action-icons a:hover {
+            color: #007bff;
+        }
+
+        .action-icons .edit-icon:hover {
+            color: #ACBB8A ;
+        }
+        .action-icons .edit-icon {
+            color: #768e3d;
+        }
+        .action-icons .delete-icon {
+            color: #C61624;
+        }
+
+        .action-icons .delete-icon:hover {
+            color: #dc3545;
+        }
+
+
+        .fa-hand-paper {
+            color: #003457;
+            font-size: 1.5rem; /* Taille de l'icône */
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Effet au survol */
+        .fa-hand-paper:hover {
+            color: #66859A !important ;
+            transform: scale(1.1); /* Agrandir légèrement au survol */
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #2C3E50!important;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            padding-top: 20px;
+        }
+
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            padding-top: 20px;
+        }
+
+        .nav-item {
+            margin-bottom: 15px;
+        }
+
+        .nav-link {
+            font-size: 1.2rem;
+            color: #495057;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #007bff;
+            transform: scale(1.1);
+        }
+
+        .btn-link {
+            color: #495057;
+            padding: 0;
+        }
+
+        .btn-link:hover {
+            color: #dc3545;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #66859A ; /* Couleur sombre élégante */
+            color: white;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style des éléments de navigation */
+        .nav-item {
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            font-size: 1.1rem;
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-link i {
+            margin-right: 15px;
+            font-size: 1.3rem;
+        }
+
+        .nav-link:hover {
+            background-color:  #66859A ; /* Couleur survol */
+            transform: scale(1.05);
+        }
+
+        .nav-link.active {
+            background-color: #E67E22 ;
+            color: white;
+        }
+
+        /* Spécificité du bouton logout */
+        .logout {
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .logout:hover {
+            color: whitesmoke; /* Rouge vif au survol */
+        }
+
+        /* Texte des éléments de la nav */
+        .nav-text {
+            font-weight: 500;
+            color:whitesmoke;
+        }
+
+        /* Partie principale du contenu */
+        main {
+            margin-left: 250px; /* Éspace pour la barre latérale */
+            padding: 20px;
+            background-color: #f4f6f9;
+        }
+
+        /* Table avec bordures fines et couleurs élégantes */
+        table {
+            width: 80%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        table thead {
+            background-color: #1ABC9C ;
+            color: white;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #ecf0f1;
+        }
+
+        table tbody tr:hover {
+            background-color: #dcdde1; /* Couleur au survol */
+            transform: scale(1.02);
+        }
+
+        .action-icons a {
+            margin: 0 10px;
+            font-size: 1.3rem;
+            color: #2c3e50;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .action-icons a:hover {
+            color: #1ABC9C ;
+            transform: scale(1.2);
+        }
+
+
+        /*css message derror  */
+        .alert-message {
+            position: fixed; /* Fixé en haut */
+            top: 20px;
+            width: 25%;/* Distance du haut */
+            left: 50%; /* Centré horizontalement */
+            transform: translateX(-50%); /* Ajustement pour le centrage */
+            z-index: 1050; /* Superposition au-dessus des autres éléments */
+            min-width: 100px; /* Largeur minimale pour une bonne visibilité */
+            text-align: center; /* Texte centré */
+            padding: 15px 20px; /* Espacement interne */
+            border-radius: 5px; /* Coins arrondis */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre élégante */
+            opacity: 0; /* Initialement invisible */
+            animation: fadeInOut 4s ease-in-out; /* Animation pour apparaître et disparaître */
+        }
+
+        /* Animation pour un affichage fluide */
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px); /* Léger décalage vers le haut */
+            }
+            10%, 90% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0); /* Apparition au centre */
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px); /* Disparition vers le haut */
+            }
+        }
+        .dan {
+            color: #C61624;
+        }
+
+        .dan:hover {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}">
+                            <i class="fas fa-home"></i>
+                            <span class="nav-text">Accueil</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" th:action="@{/logout}" class="d-inline">
+                            <button class="btn btn-link nav-link logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span class="nav-text">Diconnection</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div th:if="${param.success}" class="alert alert-success alert-message alert-dismissible fade show">
+            <i class="fas fa-check-circle"></i> <!-- Icône Font Awesome pour succès -->
+            <p th:text="${param.success}"></p>
+        </div>
+        <div th:if="${param.error}" class="alert alert-danger alert-message alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle"></i> <!-- Icône Font Awesome pour erreur -->
+            <p th:text="${param.error}"></p>
+        </div>
+        <div th:if="${param.error == 'alreadyParticipated'}" class="alert alert-danger">
+            Vous avez déjà participé à cet événement.
+        </div>
+
+        <main role="main" class="col-md-10 ms-sm-auto col-lg-10 px-4">
+            <div class="widget">
+                <h2 style="color: #76bda4; font-family: 'Trebuchet MS', sans-serif; text-align: center; margin-bottom: 30px; font-size: 1.8em; border-bottom: 3px solid #76bda4; padding-bottom: 15px; letter-spacing: 1px; font-weight: bold;">
+                    <i class="fas fa-calendar-alt" style="color: #E67E22; font-size: 30px; margin-right: 10px;"></i> Événements à venir
+                </h2>
+
+
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #34495e; font-family: 'Georgia', serif; font-size: 1.4em; font-weight: bold; text-align: center; margin-bottom: 25px; letter-spacing: 1px; line-height: 1.6; padding: 10px; background-color: #f0f8f8; border-radius: 8px;">
+                        Nous sommes le <span th:text="${todayDate}" style="color: #76bda4; font-weight: bold;"></span>.
+                        Découvrez les événements spéciaux d'aujourd'hui !
+                    </h3>
+                </div>
+
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+
+                        <th>Titre</th>
+                        <th>Lieu</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Organisateur</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="listevente : ${listevent}">
+                        <td th:text="${listevente.titre}"></td>
+                        <td th:text="${listevente.lieu}"></td>
+                        <td th:text="${listevente.date}"></td>
+                        <td th:text="${listevente.type}"></td>
+                        <td th:text="${listevente.user.username}"></td>
+                        <td class="text-center action-icons">
+                            <!-- Conteneur avec Flexbox pour aligner les éléments horizontalement -->
+                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                <!-- Formulaire pour participer, visible si capacité > 0 -->
+                                <a th:if="${listevente.capacite > 0}"
+                                   th:href="@{/user/payment/{id}(id=${listevente.id})}"
+                                   class="btn btn-link text-primary p-0"
+                                   title="Participer">
+                                    <i class="fas fa-hand-paper" style="font-size: 1.5rem;"></i>
+                                </a>
+
+                                <!-- Formulaire pour ajouter à la liste d'attente, visible si capacité == 0 -->
+                                <form th:if="${listevente.capacite == 0}" th:action="@{user/waitingList/{id}(id=${listevente.id})}" method="post">
+                                    <button type="submit" class="btn btn-link text-primary p-0" title="Ajouter à la liste d'attente">
+                                        <i class="fa-solid fa-plus" style="font-size: 1.5rem; color: #E67E22"></i>
+                                    </button>
+                                </form>
+
+                                <!-- Annuler -->
+                                <a href="#" class="text-danger" title="Annuler">
+                                    <i class="fa fa-times dan" style="font-size: 1.5rem;"></i>
+                                </a>
+                            </div>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div></div>
+
+</body>
+</html>

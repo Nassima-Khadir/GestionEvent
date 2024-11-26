@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inscription</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background-image: url('https://images.pexels.com/photos/19658083/pexels-photo-19658083.jpeg'); /* Remplacez par le chemin de votre image */
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Card styling */
+        .card {
+            width: 100%;
+            max-width: 400px;
+            background-color: rgba(0, 0, 0, 0.6); /* Noir translucide */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            margin-top: 10%;
+        }
+
+        /* Header styling */
+        .card-header {
+            background-color: #C17445; /* Vert */
+            color: #F3E9ED; /* Couleur claire pour contraste */
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Form styling */
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-label {
+            font-size: 16px;
+            color: #F3E9ED; /* Couleur claire pour contraste */
+            font-weight: 600;
+            margin-bottom: 5px; /* Ajout de l'espace sous le label */
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(243, 233, 237, 0.4); /* Bordure translucide claire */
+            background-color: rgba(255, 255, 255, 0.1); /* Fond translucide */
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 14px;
+            color: #F3E9ED; /* Texte clair */
+            margin-bottom: 15px; /* Ajout de l'espace sous le champ input */
+        }
+
+        .form-control:focus {
+            border-color: #C17445; /* Rouge sombre pour le focus */
+            outline: none;
+            color: #F3E9ED;
+            box-shadow: 0 0 5px #C17445;
+            background-color: rgba(255, 255, 255, 0.2); /* Légère intensité */
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: #C17445; /* Vert */
+            color: #F3E9ED; /* Texte clair */
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #C17445; /* Vert plus foncé au survol */
+        }
+
+        /* Checkbox style */
+        .form-check-label {
+            font-size: 14px;
+            color: #F3E9ED; /* Texte clair pour contraste */
+        }
+    </style>
+</head>
+<body>
+<div class="row mt-xl-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                Inscription
+            </div>
+
+            <div class="card-body">
+
+                <form th:action="@{/register}" method="post" th:object="${utilisateur}">
+                    <!-- Champ Nom complet -->
+                    <div class="mb-3">
+                        <label for="nomPrenom" class="form-label">Nom complet:</label>
+                        <input type="text" class="form-control" id="nomPrenom" name="nomPrenom" placeholder="Nom complet" required>
+                    </div>
+
+                    <!-- Champ Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                    </div>
+
+                    <!-- Champ Nom d'utilisateur -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nom d'utilisateur:</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Nom d'utilisateur" required>
+                    </div>
+
+                    <!-- Champ Numéro de téléphone -->
+                    <div class="mb-3">
+                        <label for="numTele" class="form-label">Numéro de téléphone:</label>
+                        <input type="text" class="form-control" id="numTele" name="numTele" placeholder="Numéro de téléphone" required>
+                    </div>
+
+                    <!-- Champ Mot de passe -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mot de passe:</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Mot de passe" required>
+                    </div>
+
+                    <!-- Champ Confirmer mot de passe -->
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirmer le mot de passe:</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirmer le mot de passe" required>
+                    </div>
+
+                    <!-- Case à cocher pour organiser -->
+                    <div class="form-check mb-3">
+                        <label class="form-check-label" style="color: #F3E9ED; font-size: 14px;">
+                            <input type="checkbox" class="form-check-input" id="organizerCheckbox" name="organisateur" onclick="toggleCompanyField()"> Êtes-vous un organisateur?
+                        </label>
+                    </div>
+
+                    <!-- Champ Nom de l'entreprise masqué par défaut -->
+                    <div id="companyField" style="display: none;">
+                        <div class="mb-3">
+                            <label for="companyName" class="form-label">Nom de l'entreprise:</label>
+                            <input type="text" class="form-control" id="companyName" name="companyName" placeholder="Nom de l'entreprise">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">S'inscrire</button>
+                    <a th:href="@{/login}" class="btn btn-link" style="color: #F3E9ED; text-decoration: none; text-align: center; display: block; margin-top: 10px;">Se connecter</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleCompanyField() {
+        const organizerCheckbox = document.getElementById('organizerCheckbox');
+        const companyField = document.getElementById('companyField');
+        // Afficher ou masquer le champ Company Name en fonction de la case cochée
+        companyField.style.display = organizerCheckbox.checked ? 'block' : 'none';
+    }
+</script>
+</body>
+</html>
+

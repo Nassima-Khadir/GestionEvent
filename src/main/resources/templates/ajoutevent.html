@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un Événement</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            background-color: #f0f2f5;
+            margin: 0;
+            color: #333;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #2C3E50 ; /* Couleur sombre élégante */
+            color: white;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            margin-bottom: 15px;
+        }
+        .nav-link {
+            font-size: 1.1rem;
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-link i {
+            margin-right: 15px;
+            font-size: 1.3rem;
+        }
+
+        .nav-link:hover {
+            background-color:  #66859A ; /* Couleur survol */
+            transform: scale(1.05);
+            color: #ffffff;
+        }
+
+        .nav-link.active {
+            background-color: #E67E22;
+            color: #ffffff;
+        }
+
+        /* Main content styling */
+        main {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #f4f6f9;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            color: #2C3E50;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2C3E50;
+        }
+
+        .form-control,
+        .form-select {
+            font-size: 0.9rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .btn-primary {
+            background-color: #E67E22;
+            border: none;
+            width: 100%;
+            font-family: 'Trebuchet MS', sans-serif;
+            padding: 10px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #E67E22;
+            transform: scale(1.05);
+        }
+
+        /* Table header styling */
+        .table th {
+            background-color: #2C3E50;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .title-event {
+            font-size: 24px; /* Taille du texte */
+            font-weight: bold; /* Texte en gras */
+            color: #2C3E50; /* Couleur du texte */
+            margin-bottom: 20px; /* Espacement en bas */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-event i {
+            margin-right: 8px; /* Espacement entre l'icône et le texte */
+            font-size: 32px; /* Taille de l'icône */
+            color: #C17445; /* Couleur de l'icône */
+        }
+
+        /*magic*/
+        /* Animation sur le titre "Nouveau Événement" */
+        .title-event {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2C3E50;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: magicEffect 2s ease-in-out infinite;
+        }
+
+        @keyframes magicEffect {
+            0% {
+                transform: scale(1);
+                color: #2C3E50;
+            }
+            50% {
+                transform: scale(1.1);
+                color: #76bda4; /* Change la couleur à orange */
+            }
+            100% {
+                transform: scale(1);
+                color: #2C3E50;
+            }
+        }
+
+        /* Effet de pulsation sur le bouton "Créer" */
+        .btn-primary {
+            background-color: #E67E22;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            background-color: #E67E22;
+            transform: scale(1.05);
+        }
+
+        /* Ajout de l'effet de pulsation */
+        .btn-primary:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* Animation sur le focus des champs de formulaire */
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #E67E22;
+            box-shadow: 0 0 5px rgba(230, 126, 34, 0.5);
+            animation: focusAnimation 0.4s ease-in-out;
+        }
+
+        @keyframes focusAnimation {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+    </style>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link active" href="/">
+                <i class="fas fa-home"></i>
+                Accueil
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/">
+                <i class="fas fa-calendar-alt"></i>
+                Événements
+            </a>
+        </li>
+        <li class="nav-item">
+            <form method="post" th:action="@{/logout}" class="d-inline">
+                <button class="btn btn-link nav-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Déconnexion
+                </button>
+            </form>
+        </li>
+    </ul>
+</div>
+
+<!-- Main Content -->
+<main>
+    <div class="form-container">
+        <h2 class="title-event">
+            <i class="fas fa-calendar-plus"></i> Nouveau Événement
+        </h2>
+
+        <form th:action="@{/admin/addevent}" th:object="${evenement}" method="post">
+            <div class="mb-3">
+                <label for="title" class="form-label">Titre :</label>
+                <input type="text" th:field="*{titre}" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Lieu  :</label>
+                <input type="text" th:field="*{lieu}" class="form-control" id="location" name="location" required>
+            </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">Date :</label>
+                <input type="date" th:field="*{date}" class="form-control" id="date" name="date" required>
+            </div>
+            <div class="mb-3">
+                <label for="capacity" class="form-label">Capacité :</label>
+                <input type="number" th:field="*{capacite}" class="form-control" id="capacity" name="capacity" required>
+            </div>
+            <div class="mb-3">
+                <label for="prix" class="form-label">Prix :</label>
+                <input type="number" th:field="*{prix}" class="form-control" id="prix" name="prix" required>
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label">Type d'Événement :</label>
+                <select class="form-select" id="type" th:field="*{type}" required>
+                    <option value="Conference">Conférence</option>
+                    <option value="Workshop">Atelier</option>
+                    <option value="Seminar">Séminaire</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description :</label>
+                <textarea class="form-control" id="description" th:field="*{description}" name="description" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Créer</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

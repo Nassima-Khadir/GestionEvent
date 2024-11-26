@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des événements</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .widget {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        h3 {
+            font-weight: 520;
+            color: #2C3E50 ;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600; /* Plus léger et moderne */
+            color: #2C3E50 ; /* Couleur orange personnalisée */
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            padding-left: 30px; /* Espace pour l'icône */
+            font-size: 2.5rem; /* Taille plus grande pour plus de présence */
+            animation: fadeIn 1s ease-out; /* Animation pour l'entrée élégante */
+        }
+
+        h1 span {
+            color: #333;
+        }
+
+        h1::before {
+            font-family: 'Font Awesome 5 Free'; /* FontAwesome pour l'icône */
+            font-weight: 900; /* Poids d'icône */
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem; /* Taille de l'icône */
+            color: #C17445; /* Même couleur que le texte */
+            transition: transform 0.3s ease-in-out; /* Transition douce pour l'icône */
+        }
+
+        h1:hover::before {
+            transform: translateY(-50%) rotate(360deg); /* Rotation de l'icône lors du survol */
+        }
+
+        /* Animation d'apparition du texte */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn {
+            text-transform: uppercase;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+
+        .table th {
+            background-color: #2C3E50 ;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .action-icons a {
+            margin-right: 10px;
+            color: #003457;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .action-icons a:hover {
+            color: #007bff;
+        }
+
+        .action-icons .edit-icon:hover {
+            color: #ACBB8A ;
+        }
+        .action-icons .edit-icon {
+            color: #768e3d;
+        }
+        .action-icons .delete-icon {
+            color: #C61624;
+        }
+
+        .action-icons .delete-icon:hover {
+            color: #dc3545;
+        }
+
+        /* Conteneur de l'icône Liste d'attente */
+        .action-icons .waiting-list-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px; /* Espace entre les deux icônes */
+            color: #E67E22 ;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .action-icons .waiting-list-icon:hover  {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px; /* Espace entre les deux icônes */
+            color: #F0B17A !important;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transform: scale(1.1);
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .users-icon {
+            color: #003457;
+            font-size: 1.5rem; /* Taille de l'icône */
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Effet au survol */
+        .users-icon:hover {
+            color: #66859A !important ;
+            transform: scale(1.1); /* Agrandir légèrement au survol */
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #2C3E50;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            padding-top: 20px;
+        }
+
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            padding-top: 20px;
+        }
+
+        .nav-item {
+            margin-bottom: 15px;
+        }
+
+        .nav-link {
+            font-size: 1.2rem;
+            color: #495057;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #007bff;
+            transform: scale(1.1);
+        }
+
+        .btn-link {
+            color: #495057;
+            padding: 0;
+        }
+
+        .btn-link:hover {
+            color: #dc3545;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #66859A ; /* Couleur sombre élégante */
+            color: white;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style des éléments de navigation */
+        .nav-item {
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            font-size: 1.1rem;
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-link i {
+            margin-right: 15px;
+            font-size: 1.3rem;
+        }
+
+        .nav-link:hover {
+            background-color:  #66859A ; /* Couleur survol */
+            transform: scale(1.05);
+        }
+
+        .nav-link.active {
+            background-color: #E67E22 ;
+            color: white;
+        }
+
+        /* Spécificité du bouton logout */
+        .logout {
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .logout:hover {
+            color: whitesmoke; /* Rouge vif au survol */
+        }
+
+        /* Texte des éléments de la nav */
+        .nav-text {
+            font-weight: 500;
+            color:whitesmoke;
+        }
+
+        /* Partie principale du contenu */
+        main {
+            margin-left: 250px; /* Éspace pour la barre latérale */
+            padding: 20px;
+            background-color: #f4f6f9;
+        }
+
+        /* Table avec bordures fines et couleurs élégantes */
+        table {
+            width: 80%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        table thead {
+            background-color: #1ABC9C ;
+            color: white;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #ecf0f1;
+        }
+
+        table tbody tr:hover {
+            background-color: #dcdde1; /* Couleur au survol */
+            transform: scale(1.02);
+        }
+
+        .action-icons a {
+            margin: 0 10px;
+            font-size: 1.3rem;
+            color: #2c3e50;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .action-icons a:hover {
+            color: #1ABC9C ;
+            transform: scale(1.2);
+        }
+         .alert {
+            display: flex;
+             justify-content: center;
+             border-radius: 5px;
+             font-size: 16px;
+         }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+
+        .alert i {
+            margin-right: 8px;
+        }
+
+        /************Supprimer****/
+        .elegant-delete {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .modal-backdrop {
+            z-index: 1040; /* Assurez-vous que le backdrop est derrière le modal */
+            background-color: rgba(0, 0, 0, 0.3); /* Ajout d'une opacité */
+        }
+
+        .modal {
+            z-index: 1050; /* Assurez-vous que le modal est devant le backdrop */
+        }
+        .modal-content {
+            background-color: #fff; /* Assurez-vous que le fond du contenu est bien visible */
+            color: #000; /* Texte lisible */
+            border-radius: 5px; /* Un peu de style arrondi */
+            padding: 15px; /* Ajoutez de l'espace interne */
+        }
+
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Navbar verticale élégante -->
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar" style="background-color: #2C3E50 !important;">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}">
+                            <i class="fas fa-home"></i>
+                            <span class="nav-text">Accueil</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/showpayement}">
+                            <i class="fas fa-coins"></i>
+                            <span class="nav-text">Paiement</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" th:action="@{/logout}" class="d-inline">
+                            <button aria-label="Se déconnecter" class="btn btn-link nav-link logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span class="nav-text">Diconnection</span>
+                            </button>
+                        </form>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Contenu principal -->
+        <main role="main" class="col-md-10 ms-sm-auto col-lg-10 px-4">
+            <div class="widget">
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span  th:text="${error}">Erreur ici</span>
+                </div>
+                    <div th:if="${success}" class="alert alert-success " role="alert">
+                        <i class="fas fa-check-circle" ></i>
+                        <span  th:text="${success}"> Succès ici</span>
+                    </div>
+                <h2 style="color: #76bda4; font-family: 'Trebuchet MS', sans-serif; text-align: center; margin-bottom: 20px; font-size: 1.8em; border-bottom: 2px solid #76bda4; padding-bottom: 10px;">
+                    <i class="fas fa-calendar-alt" style="color: #E67E22 ; font-size: 26px"></i> Gestion des événements
+                </h2>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #2c3e50; font-family: 'Georgia', serif; font-size: 1.5em; margin-bottom: 15px;">
+                        Événements actuels organisés par
+                        <span th:text="${username}" style="font-weight:bold ;color:#76bda4 "></span> :
+                    </h3>
+                </div>
+                <div class="d-flex justify-content-end mb-4">
+                    <a th:href="@{/admin/ajoutevent}" class="btn fw-bold" style="background-color: #2c3e50; color: whitesmoke;">
+                        <i class="fas fa-calendar-plus me-2" style="color: #E67E22"></i> Ajouter Événement
+                    </a>
+                </div>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Type</th>
+                        <th>Lieu</th>
+                        <th>Capacité</th>
+                        <th>Date</th>
+                        <th>Prix</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="evenement : ${evenements}">
+                        <td th:text="${evenement.titre}"></td>
+                        <td th:text="${evenement.type}"></td>
+                        <td th:text="${evenement.lieu}"></td>
+                        <td th:text="${evenement.capacite}"></td>
+                        <td th:text="${evenement.date}"></td>
+                        <td th:text="${evenement.prix +' DH '}"></td>
+                        <td th:text="${evenement.description}"></td>
+
+                        <td class="text-center action-icons">
+                            <a th:href="@{'admin/showeditevent/' + ${evenement.id}}" class="edit-icon" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                         <!--   <a th:href="@{'admin/deleteevent/' + ${evenement.id}}" class="delete-icon" title="Supprimer"
+                               onclick="return confirm('Voulez-vous supprimer cet événement ?');">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>-->
+                           <!-- <button class="delete-icon " style="background-color: transparent"
+                                    data-toggle="modal"
+                                    data-target="#deleteModal"
+                                    th:data-id="${evenement.id}"
+                                    th:data-name="${evenement.titre}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>-->
+                            <!-- Bouton pour ouvrir le modal -->
+                            <a type="button" class="delete-icon "  data-toggle="modal"
+                               data-target="#deleteModal"
+                               th:data-id="${evenement.id}"
+                               th:data-name="${evenement.titre}">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+
+                          <!-- Modal de confirmation -->
+
+                            <!-- Modal de confirmation -->
+                            <div class="modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h3>
+                                            <button type="button" class="close btn"  style=" font-size:34px;background-color: transparent;color: #E67E22" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form method="get" id="deleteForm">
+                                                <input type="hidden" id="itemId" name="id">
+                                                <button type="button" class="btn " style="background-color: #003457; color: white !important;" data-dismiss="modal">Annuler</button>
+                                                <button type="submit" class="btn " style="color: white !important; background-color: #C61624">Supprimer</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Scripts Bootstrap & jQuery -->
+                            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+                            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+                            <script>
+                                // Gestion de l'apparition du modal avec des données dynamiques
+                                $('#deleteModal').on('show.bs.modal', function (event) {
+                                    var button = $(event.relatedTarget); // Bouton qui a déclenché le modal
+                                    var itemId = button.data('id');      // Récupère l'ID de l'élément
+                                    var itemName = button.data('name');  // Récupère le nom de l'élément
+
+                                    // Mettre à jour les informations dans le modal
+                                    var modal = $(this);
+                                    modal.find('.modal-body p').text("Êtes-vous sûr de vouloir supprimer l'évenement '" + itemName + "' ?");
+                                    modal.find('#itemId').val(itemId); // Remplir le champ caché avec l'ID
+                                    modal.find('#deleteForm').attr('action', 'admin/deleteevent/' + itemId); // Met à jour l'action du formulaire
+                                });
+                            </script>
+
+                            <!-- Modal delete -->
+
+                            <!--<a data-bs-toggle="modal" data-bs-target="#exampleModal" class="delete-icon" title="Supprimer">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+
+                            <form th:action="@{/admin/deleteevent/{id}(id=${evenement.id})}" method="get">
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm"> &lt;!&ndash; Taille ajustée &ndash;&gt;
+                                        <div class="modal-content">
+                                            &lt;!&ndash; En-tête &ndash;&gt;
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+
+                                            &lt;!&ndash; Corps &ndash;&gt;
+                                            <div class="modal-body text-center">
+                                                <i class="fas fa-exclamation-circle" style="font-size: 3rem; color: #A18594;"></i>
+                                                <p class="mt-3">Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+                                            </div>
+
+                                            &lt;!&ndash; Pied de page &ndash;&gt;
+                                            <div class="modal-footer justify-content-center">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>-->
+
+
+                            <!-- Ajoutez ces styles CSS pour forcer la superposition du modal -->
+
+
+
+                            <!-- Modal de confirmation -->
+
+
+
+
+                            <!-- <a th:href="@{'admin/participants/' + ${evenement.id}}" class="hands-icon" title="Voir les participants">
+                                 <i class="fas fa-hand-paper"></i>
+
+                          </a>-->
+                            <a th:href="@{'/admin/participants/' + ${evenement.id}}" class="users-icon" title="Voir les participants">
+
+                                <i class="fas fa-users"></i>
+                            </a>
+                            <a th:href="@{'/admin/waitinglist/' + ${evenement.id}}" class="waiting-list-icon" title="Liste d'attente">
+                                <i class="fas fa-clock"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

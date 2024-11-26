@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Authentification</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            background-image: url('https://images.pexels.com/photos/19658083/pexels-photo-19658083.jpeg'); /* Remplacez par le chemin de votre image */
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Card styling */
+        .card {
+            width: 100%;
+            max-width: 400px;
+            background-color: rgba(0, 0, 0, 0.8); /* Noir translucide */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+        }
+
+        /* Header styling */
+        .card-header {
+            background-color: #C17445; /* Rouge sombre tiré des sièges */
+            color: #F3E9ED; /* Couleur claire pour contraste */
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Form styling */
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-label {
+            font-size: 16px;
+            color: #F3E9ED; /* Couleur claire pour contraste */
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(243, 233, 237, 0.4); /* Bordure translucide claire */
+            background-color: rgba(255, 255, 255, 0.1); /* Fond translucide */
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 14px;
+            color: #F3E9ED; /* Texte clair */
+        }
+
+        .form-control:focus {
+            border-color: #C17445; /* Rouge sombre pour le focus */
+            outline: none;
+            color: #F3E9ED;
+            box-shadow: 0 0 5px #C17445;
+            background-color: rgba(255, 255, 255, 0.2); /* Légère intensité */
+        }
+
+        .form-check-label {
+            font-size: 14px;
+            color: #F3E9ED; /* Texte clair pour contraste */
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: #C17445; /* Rouge sombre */
+            color: #F3E9ED; /* Texte clair */
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #C17445; /* Rouge encore plus sombre au survol */
+        }
+        a{
+           display: flex;
+            margin-top: 3%;
+            font-weight: bold;
+            font-size: 29px;
+            text-decoration: none;
+        }
+        a:hover{
+            display: flex;
+            color: white;
+            margin-top: 3%;
+            font-weight: bold;
+            font-size: 29px;
+            text-decoration: none;
+        }
+    </style>
+
+</head>
+<body>
+<div class="row mt-xl-5">
+    <div class="">
+        <div class="card">
+            <div th:if="${error != null}" style= "text-align: center !important;">
+                <p style="color: #C61624;" th:text="${error}"></p>
+            </div>
+            <div class="card-header">
+                Authentification
+            </div>
+            <div class="card-body">
+                <form method="post" th:action="@{/login}">
+                    <div class="mb-3 mt-3">
+                        <label for="username" class="form-label">Nom:</label>
+                        <input type="text" class="form-control" id="username"  placeholder="nom d'utilisateur" name="username">
+                    </div>
+                    <br>
+                    <div class="mb-3 mt-3">
+                        <label for="password" class="form-label">Mot de passe:</label>
+                        <input type="password" class="form-control"  id="password" placeholder="Mot de passe" name="password">
+                    </div>
+                    <br>
+                    <div class="form-check mb-3">
+                        <label class="form-check-label" style="  color:#C61624;!important; font-size: 14px">
+                            <input class="form-check-input" type="checkbox" name="remember-me"> Se souvenir de moi
+                        </label>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Se connecter</button>
+                    <a th:href="@{/Inscrire}"  style="justify-items: center;justify-content: center!important;color:#C61624;!important; font-size: 14px">S'inscrire</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
