@@ -3,8 +3,19 @@
 <head>
     <title>Participants</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Retirer les doublons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <style>
@@ -107,27 +118,11 @@
             transition: color 0.3s ease;
         }
 
-        .action-icons a:hover {
-            color: #007bff;
-        }
 
-        .action-icons .edit-icon:hover {
-            color: #ACBB8A ;
-        }
-        .action-icons .edit-icon {
-            color: #768e3d;
-        }
-        .action-icons .delete-icon {
-            color: #C61624;
-        }
-
-        .action-icons .delete-icon:hover {
-            color: #dc3545;
-        }
 
 
         .fa-hand-paper {
-            color: #003457;
+            color: #003457!important;
             font-size: 1.5rem; /* Taille de l'icône */
             text-decoration: none;
             transition: color 0.3s ease, transform 0.2s ease;
@@ -296,7 +291,6 @@
             width: 25%;/* Distance du haut */
             left: 50%; /* Centré horizontalement */
             transform: translateX(-50%); /* Ajustement pour le centrage */
-            z-index: 1050; /* Superposition au-dessus des autres éléments */
             min-width: 100px; /* Largeur minimale pour une bonne visibilité */
             text-align: center; /* Texte centré */
             padding: 15px 20px; /* Espacement interne */
@@ -304,6 +298,10 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre élégante */
             opacity: 0; /* Initialement invisible */
             animation: fadeInOut 4s ease-in-out; /* Animation pour apparaître et disparaître */
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1060;
         }
 
         /* Animation pour un affichage fluide */
@@ -406,7 +404,7 @@
                                    th:href="@{/user/payment/{id}(id=${listevente.id})}"
                                    class="btn btn-link text-primary p-0"
                                    title="Participer">
-                                    <i class="fas fa-hand-paper" style="font-size: 1.5rem;"></i>
+                                    <i class="fas fa-hand-paper" style="font-size: 1.5rem;color: #003457!important;"></i>
                                 </a>
 
                                 <!-- Formulaire pour ajouter à la liste d'attente, visible si capacité == 0 -->
@@ -416,11 +414,25 @@
                                     </button>
                                 </form>
 
-                                <!-- Annuler -->
-                                <a href="#" class="text-danger" title="Annuler">
-                                    <i class="fa fa-times dan" style="font-size: 1.5rem;"></i>
-                                </a>
                             </div>
+                            <div class="ratings">
+                                <div>
+                                    <i th:each="star : ${#numbers.sequence(1, 5)}"
+                                       th:classappend="${star <= T(java.lang.Math).round(listevente.averageRating) ? 'fa fa-star text-warning' : 'fa fa-star'}">
+                                    </i>
+                                </div>
+                                <div>
+                                    <span th:text="'Evaluer: ' + ${T(java.lang.Math).round(listevente.averageRating)} + '/5'"></span>
+                                </div>
+                            </div>
+
+                            <!-- Bouton pour ouvrir le modal -->
+                            <a th:href="@{'user/evaluate/' + ${listevente.id}}"  title="Evaluer">
+                                &#x1F31F;
+                            </a>
+                            <!-- Modal -->
+                            <!-- Formulaire de notation sur la page -->
+
                         </td>
 
                     </tr>
@@ -432,3 +444,5 @@
 
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>

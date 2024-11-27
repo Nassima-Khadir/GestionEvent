@@ -38,4 +38,17 @@ public class Evenement {
             inverseJoinColumns = @JoinColumn(name="user_id")
     )
     private List<Utilisateur> waitingList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "evenement", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Evaluation> ratings;
+
+    public Double getAverageRating() {
+        if (ratings == null || ratings.isEmpty()) {
+            return 0.0; // Si aucune évaluation, retourner 0
+        }
+        return ratings.stream()
+                .mapToInt(Evaluation::getRating) // Récupérer toutes les évaluations
+                .average() // Calculer la moyenne
+                .orElse(0.0); // Retourner 0.0 si aucune moyenne n'est calculable
+    }
 }

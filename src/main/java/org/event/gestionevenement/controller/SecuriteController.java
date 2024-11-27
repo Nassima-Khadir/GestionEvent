@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -55,6 +57,12 @@ public class SecuriteController {
         if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
             List<Evenement> listevent = evenementService.getAllEvenement();
             model.addAttribute("listevent", listevent);
+            LocalDateTime currentDateTime = LocalDateTime.now();
+
+            // Définir un format personnalisé
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String todayDate = currentDateTime.format(formatter);
+            model.addAttribute("todayDate",todayDate);
             return "homeUser";
         }
 
