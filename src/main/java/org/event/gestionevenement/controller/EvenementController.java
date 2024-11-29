@@ -2,10 +2,8 @@ package org.event.gestionevenement.controller;
 
 import org.event.gestionevenement.Repository.EvenementRepository;
 import org.event.gestionevenement.Repository.PaiementRepository;
-import org.event.gestionevenement.entities.Evenement;
-import org.event.gestionevenement.entities.Paiement;
-import org.event.gestionevenement.entities.Participation;
-import org.event.gestionevenement.entities.Utilisateur;
+import org.event.gestionevenement.entities.*;
+import org.event.gestionevenement.service.EvaluationService;
 import org.event.gestionevenement.service.EvenementServiceImpl;
 import org.event.gestionevenement.service.ParticipationService;
 import org.event.gestionevenement.service.UserDetailServiceImpl;
@@ -73,6 +71,8 @@ public class EvenementController {
         model.addAttribute("evenement", evenement);
         return "editevent";
     }
+
+
 
     // submit modification event
     @PostMapping("/editevent/{id}")
@@ -152,4 +152,18 @@ public class EvenementController {
         model.addAttribute("paye", paye);
         return "listepayement";
     }
+    @Autowired
+    EvaluationService evaluationService;
+    @GetMapping("/evaluations/{id}")
+    public String showEvaluations(@PathVariable int id, Model model) {
+        // Récupérer les évaluations associées à l'événement avec l'ID donné
+        List<Evaluation> evaluations = evaluationService.findByEventId(id);
+        Evenement evenement= evenementService.getEvenement(id);
+        // Ajouter les données au modèle
+        model.addAttribute("evaluations", evaluations);
+        model.addAttribute("eventId", evenement.getTitre());
+
+        return "evaluations"; // Vue correspondante à afficher
+    }
+
 }

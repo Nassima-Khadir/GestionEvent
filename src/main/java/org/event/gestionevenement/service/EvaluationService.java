@@ -9,6 +9,8 @@ import org.event.gestionevenement.entities.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EvaluationService {
     @Autowired
@@ -35,4 +37,8 @@ public class EvaluationService {
         return true;
 
     }
+    public List<Evaluation> findByEventId(int eventId) {
+        return evaluationRepository.findByEvenement_Id(eventId);
+    }
+
 }

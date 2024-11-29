@@ -136,7 +136,7 @@
             display: inline-flex;
             align-items: center;
             gap: 5px; /* Espace entre les deux icônes */
-            color: #E67E22 ;
+            color: #b1c3ff ;
             font-size: 1.2rem;
             text-decoration: none;
             transition: color 0.3s ease, transform 0.2s ease;
@@ -311,6 +311,14 @@
 
         .action-icons a:hover {
             color: #1ABC9C ;
+            transform: scale(1.2);
+        }
+
+        .evaluations-icon{
+            color:   #E67E22!important;
+        }
+        .evaluations-icon:hover{
+            color:orange!important;
             transform: scale(1.2);
         }
          .alert {
@@ -513,52 +521,6 @@
                                 });
                             </script>
 
-                            <!-- Modal delete -->
-
-                            <!--<a data-bs-toggle="modal" data-bs-target="#exampleModal" class="delete-icon" title="Supprimer">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-
-                            <form th:action="@{/admin/deleteevent/{id}(id=${evenement.id})}" method="get">
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-sm"> &lt;!&ndash; Taille ajustée &ndash;&gt;
-                                        <div class="modal-content">
-                                            &lt;!&ndash; En-tête &ndash;&gt;
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-
-                                            &lt;!&ndash; Corps &ndash;&gt;
-                                            <div class="modal-body text-center">
-                                                <i class="fas fa-exclamation-circle" style="font-size: 3rem; color: #A18594;"></i>
-                                                <p class="mt-3">Êtes-vous sûr de vouloir supprimer cet élément ?</p>
-                                            </div>
-
-                                            &lt;!&ndash; Pied de page &ndash;&gt;
-                                            <div class="modal-footer justify-content-center">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                                <button type="submit" class="btn btn-danger">Supprimer</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>-->
-
-
-                            <!-- Ajoutez ces styles CSS pour forcer la superposition du modal -->
-
-
-
-                            <!-- Modal de confirmation -->
-
-
-
-
-                            <!-- <a th:href="@{'admin/participants/' + ${evenement.id}}" class="hands-icon" title="Voir les participants">
-                                 <i class="fas fa-hand-paper"></i>
-
-                          </a>-->
                             <a th:href="@{'/admin/participants/' + ${evenement.id}}" class="users-icon" title="Voir les participants">
 
                                 <i class="fas fa-users"></i>
@@ -566,6 +528,10 @@
                             <a th:href="@{'/admin/waitinglist/' + ${evenement.id}}" class="waiting-list-icon" title="Liste d'attente">
                                 <i class="fas fa-clock"></i>
                             </a>
+                            <a th:href="@{'/admin/evaluations/' + ${evenement.id}}" class="evaluations-icon" title="Voir les évaluations">
+                                <i class="fas fa-star"></i>
+                            </a>
+
                         </td>
                     </tr>
                     </tbody>
