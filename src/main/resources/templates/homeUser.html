@@ -416,11 +416,12 @@
 
                             </div>
                             <div class="ratings">
-                                <div>
-                                    <i th:each="star : ${#numbers.sequence(1, 5)}"
-                                       th:classappend="${star <= T(java.lang.Math).round(listevente.averageRating) ? 'fa fa-star text-warning' : 'fa fa-star'}">
-                                    </i>
-                                </div>
+                                <div class="ratings">
+                                    <div>
+                                        <i th:each="star : ${#numbers.sequence(1, 5)}"
+                                           th:classappend="${star <= T(java.lang.Math).ceil(listevente.averageRating) ? 'fa fa-star text-warning' : 'fa fa-star'}">
+                                        </i>
+                                    </div>
                                 <div>
                                     <span th:text="'Evaluer: ' + ${T(java.lang.Math).round(listevente.averageRating)} + '/5'"></span>
                                 </div>
